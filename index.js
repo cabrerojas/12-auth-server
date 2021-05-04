@@ -5,17 +5,8 @@ const express = require('express');
 const app = express();
 
 
-// GET
-
-app.get('/', (req, res) => {
-
-    res.json({
-        ok: true,
-        msg: 'Todo salio bien',
-        uid: 69876
-    });
-
-});
+// Rutas
+app.use( '/api/auth', require('./routes/auth') );
 
 
 app.listen( 4000, () => {
