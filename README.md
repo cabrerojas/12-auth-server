@@ -18,6 +18,7 @@ Crear archivo `.env` en la raiz del proyecto con los siguientes parametros.
 
 `PORT=4001`
 `DB_CNN=cadena de conexion de su bd en mongoDB`
+`SECRET_JWT_SEED=secreto`
 
 mongoDB: https://cloud.mongodb.com/
 
