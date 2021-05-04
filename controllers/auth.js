@@ -30,7 +30,7 @@ const crearUsuario = async(req, res = response) => {
         dbUser.contraseña = bcryt.hashSync( contraseña, salt );
 
         // Generar el JWT
-        const token = await generarJWT( dbUser.id, nombre );
+        const token = await generarJWT( dbUser.id, nombre, correo );
 
         // Crear usuario de BD
 
@@ -41,6 +41,7 @@ const crearUsuario = async(req, res = response) => {
             ok: true,
             uid: dbUser.id,
             nombre,
+            correo,
             token,
             msg: 'Usuario creado exitosamente'
         });
@@ -84,12 +85,13 @@ const loginUsuario =  async (req, res = response) => {
         }
 
         // Generar el JWT
-        const token = await generarJWT( dbUser.id, dbUser.nombre );
+        const token = await generarJWT( dbUser.id, dbUser.nombre, dbUser.correo  );
 
         // Generar respuesta existosa
         return res.json({
             ok: true,
             uid: dbUser.id,
+            correo,
             token,
             msg: 'Inicio de sesión exito'
         });
@@ -109,16 +111,20 @@ const loginUsuario =  async (req, res = response) => {
 
 const revalidarToken =  async (req, res) => {
 
-    const { uid, nombre } = req;
+    const { uid } = req;
+
+    //Leer base de datos
+    const dbUser = await Usuario.findById(uid);
 
      // Generar el JWT
-     const token = await generarJWT( uid, nombre );
+     const token = await generarJWT( uid, dbUser.nombre );
 
     return res.json({
         ok: true,
         msg: 'Renovar',
         uid,
-        nombre,
+        nombre: dbUser.nombre,
+        correo: dbUser.correo,
         token
     });
 

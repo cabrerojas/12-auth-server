@@ -14,10 +14,11 @@ const validarJWT = async ( req, res = response, next ) => {
 
     try {
 
-        const { uid, nombre } = jwt.verify( token, process.env.SECRET_JWT_SEED );
+        const { uid, nombre, correo } = jwt.verify( token, process.env.SECRET_JWT_SEED );
         
         req.uid     = uid;
         req.nombre  = nombre;
+        req.correo  = correo;
 
 
     } catch (error) {
