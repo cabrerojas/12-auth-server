@@ -5,7 +5,12 @@ const { crearUsuario, loginUsuario, revalidarToken } = require('../controllers/a
 const router = Router();
 
 // Crear un nuevo usuario
-router.post( '/nuevo', crearUsuario );
+router.post( '/nuevo', [
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('correo', 'El correo es obligatorio').isEmail(),
+    check('contraseña', 'La contraseña debe ser de 6 caracteres o mayor').isLength(6),
+
+], crearUsuario );
 
 // Login de usuario
 router.post( '/', [
