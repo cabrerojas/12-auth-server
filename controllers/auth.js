@@ -29,7 +29,7 @@ const crearUsuario = async(req, res = response) => {
         const salt = bcryt.genSaltSync(10);
         dbUser.contraseña = bcryt.hashSync( contraseña, salt );
 
-        // Generar el KWT
+        // Generar el JWT
         const token = await generarJWT( dbUser.id, nombre );
 
         // Crear usuario de BD
@@ -56,23 +56,54 @@ const crearUsuario = async(req, res = response) => {
         });
     }
 
-   
-
-    return res.json({
-        ok: true,
-        msg: 'Crear Usuario /nuevo'
-    });
-
 };
 
-const loginUsuario =  (req, res = response) => {
+const loginUsuario =  async (req, res = response) => {
 
     const { correo, contraseña } = req.body;
 
-    return res.json({
-        ok: true,
-        msg: 'Login de usuario /'
-    });
+    try {
+
+        const dbUser = await Usuario.findOne({correo});
+
+        if (!dbUser) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Contraseña y/o correo son incorrectos'
+            });
+        }
+
+        // Confirmar si contraseña ehace math
+        const validPassword = bcryt.compareSync( contraseña, dbUser.contraseña );
+
+        if (!validPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Contraseña y/o correo son incorrectos'
+            });
+        }
+
+        // Generar el JWT
+        const token = await generarJWT( dbUser.id, dbUser.nombre );
+
+        // Generar respuesta existosa
+        return res.json({
+            ok: true,
+            uid: dbUser.id,
+            token,
+            msg: 'Inicio de sesión exito'
+        });
+
+
+        
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
 
 };
 
