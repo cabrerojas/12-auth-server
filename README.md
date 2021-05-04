@@ -8,13 +8,19 @@
 
 Instalar nodemen
 
-`https://www.npmjs.com/package/nodemon`
+https://www.npmjs.com/package/nodemon
 
 `npm install -g nodemon`
+
+## 
 
 Crear archivo `.env` en la raiz del proyecto con los siguientes parametros.
 
 `PORT=4001`
+
+##
+
+`npm install` para generar la carpeta node_module
 
 ## Para iniciar en desarrollo:
 
