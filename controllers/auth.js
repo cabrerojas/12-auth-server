@@ -1,6 +1,7 @@
 
 const { response } = require('express');
 const Usuario = require('../models/Usuario');
+const bcryt = require('bcryptjs');
 
 const crearUsuario = async(req, res = response) => {
 
@@ -24,6 +25,8 @@ const crearUsuario = async(req, res = response) => {
         const dbUser = new Usuario( req.body );
 
         // Hashear la contraseña
+        const salt = bcryt.genSaltSync(10);
+        dbUser.contraseña = bcryt.hashSync( contraseña, salt );
 
         // Generar el KWT
 
