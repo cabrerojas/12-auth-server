@@ -19,6 +19,8 @@ Crear archivo `.env` en la raiz del proyecto con los siguientes parametros.
 `PORT=4001`
 `DB_CNN=cadena de conexion de su bd en mongoDB`
 
+mongoDB: https://cloud.mongodb.com/
+
 ##
 
 `npm install` para generar la carpeta node_module
